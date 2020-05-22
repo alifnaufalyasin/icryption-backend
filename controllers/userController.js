@@ -32,6 +32,7 @@ const login = async (req,res,next) => {
 const register = async (req,res,next) => {
     const user = new User(req.body)
     user.password = hashPassword(req.body.password)
+    user.status = 'Leader'
     await user.save()
     response(res,true,user,'Berhasil melakukan registrasi user',201)
 }
