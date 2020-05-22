@@ -19,10 +19,18 @@
     "nodemon": "^2.0.4"
   },
   "scripts": {
-    "prod": "node index.js",
-    "dev": "nodemon"
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
   "author": "abisatria",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abisatria1/icryption-backend.git"
+  },
+  "bugs": {
+    "url": "https://github.com/abisatria1/icryption-backend/issues"
+  },
+  "homepage": "https://github.com/abisatria1/icryption-backend#readme",
   "description": ""
 }
