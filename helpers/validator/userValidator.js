@@ -10,6 +10,15 @@ const validateEmail = () => {
     }
 }
 
+const validateRepassword = () => {
+    return async (req,res,next) => {
+        const {password, rePassword} = req.body
+        if (password !== rePassword) return response(res,false,null,'rePassword tidak sesuai dengan password',400)
+        next()
+    }
+}
+
 module.exports = {
-    validateEmail
+    validateEmail,
+    validateRepassword
 }
