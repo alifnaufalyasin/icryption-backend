@@ -1,6 +1,6 @@
 const router = require('express-promise-router')()
 const userController = require('../controllers/userController')
-
+const upload = require('../helpers/upload')
 // validation
 const {validateBody} = require('../helpers/validator/validateBody')
 const validator = require('../helpers/validator/userValidator')
@@ -18,11 +18,21 @@ router.route('/login')
         userController.login
     )
 
-router.route('/register')
+router.route('/registerCp')
     .post(
-        validateBody(userSchemas.registerSchema),
+        upload.single('fotoId'),
+        validateBody(userSchemas.registerCpSchema),
         validator.validateEmail(),
         validator.validateRepassword(),
-        userController.register
+        userController.registerCp
+    )
+
+router.route('/registerCtf')
+    .post(
+        upload.array('fotoId',3),
+        validator.parseDataPeserta(),
+        validateBody(userSchemas.registerCtfSchema),
+        validator.validateAllEmail(),
+        userController.registerCtf
     )
 module.exports = router

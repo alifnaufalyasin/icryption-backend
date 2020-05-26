@@ -1,8 +1,23 @@
 const Joi = require('joi')
 const {response} = require('../wrapper')
+const cloudinary = require('cloudinary')
+
+const deleteFoto = async req => {
+    if (req.files) {
+        req.files.map(async item => {
+            try {
+                await cloudinary.v2.uploader.destroy(item.public_id)
+            } catch (error) {
+                console.log(error)
+            }
+        })
+    }else if (req.file) {
+        await cloudinary.v2.uploader.destroy(req.file.public_id)
+    }
+}
 
 const validateBody = schema => {
-    return (req,res,next) => {
+    return async (req,res,next) => {
         const result = Joi.validate(req.body,schema,{abortEarly : false})
         if (result.error) {
             let errorData = []
@@ -13,6 +28,7 @@ const validateBody = schema => {
                 }
                 errorData.push(error)
             })
+            await deleteFoto(req)
             return response(res,false,errorData,'Validasi gagal',422)
         }
         next()
@@ -20,5 +36,6 @@ const validateBody = schema => {
 }
 
 module.exports = {
-    validateBody
+    validateBody,
+    deleteFoto
 }

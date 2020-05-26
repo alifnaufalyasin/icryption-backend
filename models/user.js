@@ -9,19 +9,20 @@ const User = db.define(
             allowNull : false
         },
         email : {
-            type : Sequelize.STRING
+            type : Sequelize.STRING,
+            allowNull : false
         },
         notelp : {
-            type : Sequelize.STRING
+            type : Sequelize.STRING,
+            allowNull : false
         },
         fotoId : {
-            type : Sequelize.STRING
+            type : Sequelize.STRING,
+            allowNull : false
         },
         status : {
-            type : Sequelize.STRING
-        },
-        password : {
             type : Sequelize.STRING,
+            allowNull : false
         }
     }
 )

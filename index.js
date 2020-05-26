@@ -4,13 +4,13 @@ const bodyParser = require('body-parser')
 const dotenv = require('dotenv').config()
 // another file
 const {response} = require('./helpers/wrapper')
-
+const {deleteFoto} = require('./helpers/validator/validateBody')
 // database and relation
 const db = require('./config/database')
 const relation = require('./config/relation')
 
 // middleware
-app.use(bodyParser.urlencoded({extended : false}))
+app.use(bodyParser.urlencoded({extended : true}))
 app.use(bodyParser.json())
 
 // router
@@ -25,7 +25,8 @@ app.use((req,res,next) => {
     next(err)
 })
 
-app.use((err,req,res,next) => {
+app.use(async (err,req,res,next) => {
+    deleteFoto(req)
     const {message} = err
     const status = err.status || 500
     response(res,false,null,message,status)
