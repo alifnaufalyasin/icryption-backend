@@ -22,6 +22,7 @@ router.route('/register')
     .post(
         validateBody(userSchemas.registerSchema),
         validator.validateEmail(),
+        validator.validateRepassword(),
         userController.register
     )
 module.exports = router
