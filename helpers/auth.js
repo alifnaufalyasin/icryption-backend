@@ -3,7 +3,7 @@ const jwtStrategy = require('passport-jwt').Strategy
 const {ExtractJwt} = require('passport-jwt')
 
 // addtional
-const dotenv = require('dotenv').config()
+ require('dotenv').config()
 const {customError} = require('./wrapper')
 const User = require('../models/user')
 
