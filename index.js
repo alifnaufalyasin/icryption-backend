@@ -39,6 +39,9 @@ app.use(bodyParser.json())
 // router
 const userRoute = require('./routes/user')
 
+app.get('/', function(req,res){
+    res.send('Hello')
+})
 app.use('/api/users' , userRoute)
 
 // error handling
