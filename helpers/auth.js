@@ -9,7 +9,7 @@ const User = require('../models/user')
 
 passport.use(new jwtStrategy({
     jwtFromRequest : ExtractJwt.fromHeader('authorization'),
-    secretOrKey : process.env.API_KEY
+    secretOrKey : "icrpytion2020BuildByDuniaGelap"
 } , async(payload,done) => {
     try {
         const now = Date.now()
