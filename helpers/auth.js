@@ -3,13 +3,13 @@ const jwtStrategy = require('passport-jwt').Strategy
 const {ExtractJwt} = require('passport-jwt')
 
 // addtional
- require('dotenv').config()
+require('dotenv').config()
 const {customError} = require('./wrapper')
 const User = require('../models/user')
 
 passport.use(new jwtStrategy({
     jwtFromRequest : ExtractJwt.fromHeader('authorization'),
-    secretOrKey : "icrpytion2020BuildByDuniaGelap"
+    secretOrKey : process.env.API_KEY,
 } , async(payload,done) => {
     try {
         const now = Date.now()
