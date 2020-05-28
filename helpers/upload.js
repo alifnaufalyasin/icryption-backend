@@ -17,6 +17,7 @@ const storage = cloudinaryStorage({
     folder : "Icpytion2020/",
     allowedFormats: ['jpg', 'png' , 'jpeg' , 'gif'],
     filename : (req,file,cb) => {
+        console.log(file)
         let name = file.originalname + "_" +Date.now()
         cb(null,name)
     }
