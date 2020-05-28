@@ -88,14 +88,14 @@ const cekEmail = async (req,res,next) => {
     const email = req.params.email
     const user = await User.findOne({where : {email}})
     if (user) return response(res,false,null,'Email sudah digunakan',400)
-    response(res,true,null,'Email tersedia',400)
+    response(res,true,null,'Email tersedia',200)
 }
 
 const cekUsername = async (req,res,next) => {
     const username = req.params.username
     const team = await Team.findOne({where : {username}})
     if (team) return response(res,false,null,'Username sudah digunakan',400)
-    response(res,true,null,'Username tersedia',400)
+    response(res,true,null,'Username tersedia',200)
 }
 
 module.exports = {
