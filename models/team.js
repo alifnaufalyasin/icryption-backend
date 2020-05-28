@@ -13,6 +13,14 @@ const Team = db.define(
         status : {
             type : Sequelize.STRING,
             allowNull : false
+        },
+        username : {
+            type : Sequelize.STRING,
+            allowNull : false
+        },
+        password : {
+            type : Sequelize.STRING,
+            allowNull : false
         }
     }
 )

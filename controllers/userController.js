@@ -33,6 +33,7 @@ const login = async (req,res,next) => {
 
 const registerCp = async (req,res,next) => {
     if (!req.file) return response(res,false,null,'Photo is null',422)
+    const {username,password} = req.body
     // create user
     const user = new User(req.body)
     user.fotoId = req.file.url
@@ -41,7 +42,9 @@ const registerCp = async (req,res,next) => {
     // create team 
     const team = new Team(
         {
-            status : 'CP'
+            status : 'CP',
+            username,
+            password : hashPassword(password)
         }
     )
     await team.save()
@@ -51,19 +54,21 @@ const registerCp = async (req,res,next) => {
 }
 
 const registerCtf = async (req,res,next) => {
-    const {dataPeserta} = req.body
-    const {namaTeam, daerah} = req.body
+    if (!req.files) return response(res,false,null,'Photo is null',422)
+    const {namaTeam, daerah, username,password,dataPeserta} = req.body
     const {files} = req
     let pesertaArr = []
     if (dataPeserta.length !== files.length) {
         await deleteFoto(req)
-        return response(res,false,null,'Tidak dapat memproses data yang kurang, silahkan lengkapi data atau hubungi panitia',422)
+        return response(res,false,null,'Tidak dapat memproses data yang kurang, silahkan lengkapi data (foto id) atau hubungi panitia',422)
     }
     // create team
     const team = await Team.create({
         namaTeam ,
         daerah,
-        status : 'CTF'
+        status : 'CTF',
+        username,
+        password : hashPassword(password)
     })
     // create user
     for (let i = 0; i < dataPeserta.length; i++) {
@@ -79,9 +84,25 @@ const registerCtf = async (req,res,next) => {
     response(res,true,{team,pesertaArr},'Berhasil melakukan registrasi lomba CTF',201)
 }
 
+const cekEmail = async (req,res,next) => {
+    const email = req.params.email
+    const user = await User.findOne({where : {email}})
+    if (user) return response(res,false,null,'Email sudah digunakan',400)
+    response(res,true,null,'Email tersedia',400)
+}
+
+const cekUsername = async (req,res,next) => {
+    const username = req.params.username
+    const team = await Team.findOne({where : {username}})
+    if (team) return response(res,false,null,'Username sudah digunakan',400)
+    response(res,true,null,'Username tersedia',400)
+}
+
 module.exports = {
     index,
     login,
     registerCp,
-    registerCtf
+    registerCtf,
+    cekEmail,
+    cekUsername
 }

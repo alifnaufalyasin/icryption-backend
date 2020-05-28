@@ -1,22 +1,31 @@
 const User = require('../../models/user')
+const Team = require('../../models/team')
 const {response} = require('../wrapper')
 const {deleteFoto} = require('./validateBody')
 
-const validateEmail = () => {
+const validateEmailAndUsername = () => {
     return async (req,res,next) => {
-        const {email} = req.body
+        const {email,username} = req.body
         const user = await User.findOne({where : {email}})
-        if (user) {
+        const userName = await Team.findOne({where : {username}})
+        if (user && userName) {
+            deleteFoto(req)
+            return response(res,false,null,'Email dan Username sudah digunakan',400)
+        }else if (user) {
             deleteFoto(req)
             return response(res,false,null,'Email sudah digunakan',400)
+        }else if (userName){
+            deleteFoto(req)
+            return response(res,false,null,'Username sudah digunakan',400)
         }
         next()
     }
 }
 
-const validateAllEmail = () => {
+const validateAllEmailandUsername = () => {
     return async (req,res,next) => {
-        const {dataPeserta} = req.body
+        const {dataPeserta,username} = req.body
+        const userName = await Team.findOne({where : {username}})
         let errData = []
         for (let i = 0; i < dataPeserta.length; i++) {
             try {
@@ -29,9 +38,15 @@ const validateAllEmail = () => {
                 console.log(error)
             }
         }
-        if (errData.length !== 0) {
+        if (errData.length !== 0 && userName) {
             deleteFoto(req)
-            return response(res,false,errData,`Email ini sudah digunakan`,400)
+            return response(res,false,errData,`Username dan Email sudah digunakan, silahkan cek kembali Username team anda dan Email setiap anggota`,400)
+        }else if (errData.length !== 0) {
+            deleteFoto(req)
+            return response(res,false,errData,`Email sudah digunakan, silahkan cek kembali Email setiap anggota`,400)
+        }else if (userName) {
+            deleteFoto(req)
+            return response(res,false,errData,`Email sudah digunakan, silahkan cek kembali Email setiap anggota`,400)
         }
         next()
     }
@@ -40,7 +55,10 @@ const validateAllEmail = () => {
 const validateRepassword = () => {
     return async (req,res,next) => {
         const {password, rePassword} = req.body
-        if (password !== rePassword) return response(res,false,null,'rePassword tidak sesuai dengan password',400)
+        if (password !== rePassword) {
+            deleteFoto(req)
+            return response(res,false,null,'Re-Password tidak sesuai dengan password',400)
+        }
         next()
     }
 }
@@ -53,8 +71,8 @@ const parseDataPeserta = () => {
 }
 
 module.exports = {
-    validateEmail,
+    validateEmailAndUsername,
     validateRepassword,
     parseDataPeserta,
-    validateAllEmail
+    validateAllEmailandUsername
 }

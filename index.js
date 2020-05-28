@@ -52,6 +52,7 @@ app.use(async (err,req,res,next) => {
     deleteFoto(req)
     const {message} = err
     const status = err.status || 500
+    console.log(err)
     response(res,false,null,message,status)
 })
 

@@ -22,7 +22,7 @@ router.route('/registerCp')
     .post(
         upload.single('fotoId'),
         validateBody(userSchemas.registerCpSchema),
-        validator.validateEmail(),
+        validator.validateEmailAndUsername(),
         validator.validateRepassword(),
         userController.registerCp
     )
@@ -32,7 +32,16 @@ router.route('/registerCtf')
         upload.array('fotoId',3),
         validator.parseDataPeserta(),
         validateBody(userSchemas.registerCtfSchema),
-        validator.validateAllEmail(),
+        validator.validateAllEmailandUsername(),
+        validator.validateRepassword(),
         userController.registerCtf
     )
+
+router.route('/cekEmail/:email')
+    .get(userController.cekEmail)
+
+router.route('/cekUsername/:username')
+    .get(userController.cekUsername)
+
+
 module.exports = router
