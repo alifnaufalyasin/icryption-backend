@@ -13,7 +13,8 @@ const relation = require('./config/relation')
 // cors
 var allowedOrigins = [
     "http://127.0.0.1:5501",
-    "http://localhost:3001",
+    "http://localhost:3000",
+    "http://localhost:1000",
     "bot-linecoba.herokuapp.com",
     "https://icyption.aliven.my.id",
     "http://icyption.aliven.my.id"
