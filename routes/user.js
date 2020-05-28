@@ -24,6 +24,7 @@ router.route('/registerCp')
         validateBody(userSchemas.registerCpSchema),
         validator.validateEmailAndUsername(),
         validator.validateRepassword(),
+        validator.validateCaptcha(),
         userController.registerCp
     )
 

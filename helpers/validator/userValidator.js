@@ -2,6 +2,8 @@ const User = require('../../models/user')
 const Team = require('../../models/team')
 const {response} = require('../wrapper')
 const {deleteFoto} = require('./validateBody')
+const axios = require('axios')
+require('dotenv').config()
 
 const validateEmailAndUsername = () => {
     return async (req,res,next) => {
@@ -70,9 +72,30 @@ const parseDataPeserta = () => {
     }
 }
 
+const validateCaptcha = () => {
+    return async (req,res,next) => {
+        const secret_key = process.env.SECRET_KEY;
+        const token = req.body.token;
+        console.log(token);
+        const url = `https://www.google.com/recaptcha/api/siteverify?secret=${secret_key}&response=${token}`;
+        const hasil = await axios({
+            method: 'post',
+            url: url,
+        })
+        console.log(hasil.data)
+        if(hasil.data.success){
+            delete req.body.token
+        }else{
+            return response(res,false,null,'Maaf, captcha tidak bisa memverifikasi anda',400)
+        }
+        next()
+    }
+}
+
 module.exports = {
     validateEmailAndUsername,
     validateRepassword,
     parseDataPeserta,
-    validateAllEmailandUsername
+    validateAllEmailandUsername,
+    validateCaptcha
 }

@@ -6,13 +6,14 @@ const loginSchema = Joi.object().keys({
 })
 
 const registerCpSchema = Joi.object().keys({
+    token : Joi.string().required(),
     nama : Joi.string().min(3).required(),
     email : Joi.string().email().required(),
     notelp : Joi.string().min(6).required(),
     username : Joi.string().min(3).required(),
     password : Joi.string().min(6).required(),
     rePassword : Joi.string().min(6).required(),
-    fotoId : Joi.any()
+    fotoId : Joi.any(),
 })
 
 const registerCtfSchema = Joi.object().keys({
