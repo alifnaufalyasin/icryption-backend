@@ -14,7 +14,8 @@ const relation = require('./config/relation')
 var allowedOrigins = [
     "http://127.0.0.1:5501",
     "http://localhost:3001",
-    "bot-linecoba.herokuapp.com"
+    "bot-linecoba.herokuapp.com",
+    "icyption.aliven.my.id"
 ]
 
 app.use(
