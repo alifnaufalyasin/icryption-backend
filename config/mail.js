@@ -16,10 +16,13 @@ const transporter = nodemailer.createTransport(smtpTransport({
 function sendMail(receiver,nama) {
   for(let i = 0; i<receiver.length; i++) {
     const mailOptions = {
-      from: 'pengirim@gmail.com',
+      from: `"Icyption" <pengirim@gmail.com>`,
       to: receiver[i],
       subject: 'Pendafaran Icyption 2020',
-      text: `Haloo ${nama[i]} ...`
+      text: `Haloo ${nama[i]} ...
+
+Selamat, registrasi anda telah berhasil.
+`
     };
  
     transporter.sendMail(mailOptions, function(error, info){
