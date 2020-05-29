@@ -83,10 +83,10 @@ const validateCaptcha = () => {
             url: url,
         })
         console.log(hasil.data)
-        if(hasil.data.success){
+        if(hasil.data.success && (hasil.data.score >= 0.5)){
             delete req.body.token
         }else{
-            return response(res,false,null,'Maaf, captcha tidak bisa memverifikasi anda',400)
+            return response(res,false,null,'Maaf, kami mendeteksi adanya bot',400)
         }
         next()
     }

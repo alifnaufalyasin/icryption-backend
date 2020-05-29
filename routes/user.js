@@ -35,6 +35,7 @@ router.route('/registerCtf')
         validateBody(userSchemas.registerCtfSchema),
         validator.validateAllEmailandUsername(),
         validator.validateRepassword(),
+        validator.validateCaptcha(),
         userController.registerCtf
     )
 

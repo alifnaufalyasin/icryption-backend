@@ -17,6 +17,7 @@ const registerCpSchema = Joi.object().keys({
 })
 
 const registerCtfSchema = Joi.object().keys({
+    token : Joi.string().required(),
     namaTeam : Joi.string().min(3).required(),
     daerah : Joi.string().required(),
     username : Joi.string().min(3).required(),
