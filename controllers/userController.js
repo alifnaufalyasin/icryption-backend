@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken')
 const User = require('../models/user')
 const Team = require('../models/team')
 const {deleteFoto} = require('../helpers/validator/validateBody')
+const { sendMail } = require('../config/mail')
 
 const signToken = user => {
     return token = jwt.sign({
@@ -50,6 +51,9 @@ const registerCp = async (req,res,next) => {
     await team.save()
     // tambahkan relasi
     user.setTeam(team)
+    //send email
+    await sendMail([user.email],[user.nama])
+
     response(res,true,{user,team},'Berhasil melakukan registrasi lomba CP',201)
 }
 
@@ -71,6 +75,8 @@ const registerCtf = async (req,res,next) => {
         password : hashPassword(password)
     })
     // create user
+    let userEmail = []
+    let userNama = []
     for (let i = 0; i < dataPeserta.length; i++) {
         let {nama,email,notelp,status} = dataPeserta[i]
         let index = pesertaArr.length
@@ -80,7 +86,11 @@ const registerCtf = async (req,res,next) => {
         })
         pesertaArr.push(user)
         user.setTeam(team)
+        userEmail.push(user.email)
+        userNama.push(user.nama)
     }
+    //send email
+    await sendMail(userEmail,userNama)
     response(res,true,{team,pesertaArr},'Berhasil melakukan registrasi lomba CTF',201)
 }
 
